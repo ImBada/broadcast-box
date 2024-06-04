@@ -138,6 +138,7 @@ func videoWriter(remoteTrack *webrtc.TrackRemote, stream *stream, peerConnection
 }
 
 func WHIP(offer, streamKey string) (string, error) {
+	log.Printf("New WHIP Session %s\n", streamKey)
 	peerConnection, err := newPeerConnection(apiWhip)
 	if err != nil {
 		return "", err

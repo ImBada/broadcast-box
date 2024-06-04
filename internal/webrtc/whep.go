@@ -72,6 +72,7 @@ func WHEPChangeLayer(whepSessionId, layer string) error {
 }
 
 func WHEP(offer, streamKey string) (string, string, error) {
+	log.Printf("New WHEP Session %s \n", streamKey)
 	streamMapLock.Lock()
 	defer streamMapLock.Unlock()
 	stream, err := getStream(streamKey, false)

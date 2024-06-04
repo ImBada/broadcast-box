@@ -138,6 +138,7 @@ func peerConnectionDisconnected(streamKey string, whepSessionId string) {
 	}
 
 	stream.whipActiveContextCancel()
+	log.Printf("Deleting from streamMap %s %s \n", streamKey, whepSessionId)
 	delete(streamMap, streamKey)
 }
 
