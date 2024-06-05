@@ -127,18 +127,27 @@ func peerConnectionDisconnected(streamKey string, whepSessionId string) {
 	defer stream.whepSessionsLock.Unlock()
 
 	if whepSessionId != "" {
+		log.Printf("Subscriber has disconnected %s \n", streamKey)
 		delete(stream.whepSessions, whepSessionId)
 	} else {
+		log.Printf("Publisher has disconnected %s \n", streamKey)
 		stream.hasWHIPClient.Store(false)
 	}
 
 	// Only delete stream if all WHEP Sessions are gone and have no WHIP Client
 	if len(stream.whepSessions) != 0 || stream.hasWHIPClient.Load() {
+		log.Printf("Not Ending stream %s (%d subscribers) and (has publisher %t) \n", streamKey, len(stream.whepSessions), stream.hasWHIPClient.Load())
+
 		return
 	}
 
+	if whepSessionId != "" {
+		log.Printf("Ending stream %s from Subscriber disconnect \n", streamKey)
+	} else {
+		log.Printf("Ending stream %s from Publisher disconnect \n", streamKey)
+	}
+
 	stream.whipActiveContextCancel()
-	log.Printf("Deleting from streamMap %s %s \n", streamKey, whepSessionId)
 	delete(streamMap, streamKey)
 }
 
