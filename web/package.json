@@ -12,6 +12,7 @@
   "scripts": {
     "start": "vite",
     "host": "vite --host",
+    "dev": "node scripts/set-ip.mjs && vite --host",
     "build": "vite build",
     "lint": "eslint ./src --max-warnings 0"
   },

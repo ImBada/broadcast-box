@@ -19,7 +19,7 @@ fi
 
 # web 폴더에서 npm을 백그라운드로 실행
 echo "Starting npm server..."
-(cd web && npm run host) &
+(cd web && npm run dev) &
 
 # 잠시 대기
 sleep 2
