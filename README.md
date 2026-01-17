@@ -16,6 +16,7 @@
   - [Docker](#docker)
   - [Docker Compose](#docker-compose)
   - [Environment variables](#environment-variables)
+  - [Authentication and Logging](#authentication-and-logging)
   - [Network Test on Start](#network-test-on-start)
 - [Design](#design)
 
@@ -206,6 +207,7 @@ The frontend can be configured by passing these URL Parameters.
 
 The backend can be configured with the following environment variables.
 
+- `WEBHOOK_URL` - URL for Webhook Backend. Provides authentication and logging
 - `DISABLE_STATUS` - Disable the status API
 - `DISABLE_FRONTEND` - Disable the serving of frontend. Only REST APIs + WebRTC is enabled.
 - `HTTP_ADDRESS` - HTTP Server Address
@@ -234,6 +236,17 @@ The backend can be configured with the following environment variables.
 
 - `DEBUG_PRINT_OFFER` - Print WebRTC Offers from client to Broadcast Box. Debug things like accepted codecs.
 - `DEBUG_PRINT_ANSWER` - Print WebRTC Answers from Broadcast Box to Browser. Debug things like IP/Ports returned to client.
+
+## Authentication and Logging
+
+To prevent random users from streaming to your server, you can set the `WEBHOOK_URL` and validate/process requests in your code. This enables you to separate the authorization between broadcasting (whip) and watching (whep). So you can safely share a watch link without exposing the key used for broadcasting.
+
+If the request succeeds (meaning the stream key is accepted), broadcast-box redirects the stream to an url given by the external server, otherwise the streaming request is dropped.
+
+See [here](examples/webhook-server.go). For an example Webhook Server that only allows the stream `broadcastBoxRulez`
+
+For a more advanced example of a webhook server implementation making use of separating the key for streaming from the key for watching, see the [broadcastbox-webhookserver](https://github.com/chrisingenhaag/broadcastbox-webhookserver) repository.
+
 
 ## Network Test on Start
 
